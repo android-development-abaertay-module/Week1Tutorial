@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/input_phone_hint" />
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:columnCount="3"
+            android:layout_weight="1"
+            android:useDefaultMargins="true"
+
+            android:rowCount="4">
+
+            <Button
+                android:layout_column="0"
+                android:layout_row="0"
+                android:layout_gravity="fill_horizontal"
+                android:layout_columnWeight="1"
+                android:id="@+id/btn1"
+                android:text="@string/input_1" />
+
+            <Button
+                android:layout_column="1"
+                android:layout_row="0"
+                android:layout_gravity="fill_horizontal"
+                android:layout_columnWeight="1"
+                android:id="@+id/btn2"
+                android:text="@string/input_2" />
+
+            <Button
+                android:layout_column="2"
+                android:layout_row="0"
+                android:layout_gravity="fill_horizontal"
+                android:layout_columnWeight="1"
+                android:id="@+id/btn3"
+                android:text="@string/input_3" />
+
+            <Button
+                android:layout_column="0"
+                android:layout_row="1"
+                android:layout_gravity="fill_horizontal"
+                android:layout_columnWeight="1"
+                android:id="@+id/btn4"
+                android:text="@string/input_4" />
+
+            <Button
+                android:layout_column="1"
+                android:layout_row="1"
+                android:layout_gravity="fill_horizontal"
+                android:layout_columnWeight="1"
+                android:id="@+id/btn5"
+                android:text="@string/input_5" />
+
+            <Button
+                android:layout_column="2"
+                android:layout_row="1"
+                android:layout_gravity="fill_horizontal"
+                android:layout_columnWeight="1"
+                android:id="@+id/btn6"
+                android:text="@string/input_6" />
+
+            <Button
+                android:layout_column="0"
+                android:layout_row="2"
+                android:layout_gravity="fill_horizontal"
+                android:layout_columnWeight="1"
+                android:id="@+id/btn7"
+                android:text="@string/input_7" />
+
+            <Button
+                android:layout_column="1"
+                android:layout_row="2"
+                android:layout_gravity="fill_horizontal"
+                android:layout_columnWeight="1"
+                android:id="@+id/btn8"
+                android:text="@string/input_8" />
+
+            <Button
+                android:layout_column="2"
+                android:layout_row="2"
+                android:layout_gravity="fill_horizontal"
+                android:layout_columnWeight="1"
+                android:id="@+id/btn9"
+                android:text="@string/input_9" />
+
+            <Button
+                android:layout_column="0"
+                android:layout_row="3"
+                android:layout_gravity="fill_horizontal"
+                android:layout_columnWeight="1"
+                android:id="@+id/btnStar"
+                android:text="@string/input_star" />
+
+            <Button
+                android:layout_column="1"
+                android:layout_row="3"
+                android:layout_gravity="fill_horizontal"
+                android:layout_columnWeight="1"
+                android:id="@+id/btn0"
+                android:text="@string/input_0" />
+
+            <Button
+                android:layout_column="2"
+                android:layout_row="3"
+                android:layout_gravity="fill_horizontal"
+                android:layout_columnWeight="1"
+                android:id="@+id/btnHash"
+                android:text="@string/input_hash" />
+
+        </GridLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/call_btn_text" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

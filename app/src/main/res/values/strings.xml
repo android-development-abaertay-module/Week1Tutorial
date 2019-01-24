@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Tutorial_1</string>
+    <string name="input_1">1</string>
+    <string name="input_2">2</string>
+    <string name="input_3">3</string>
+    <string name="input_4">4</string>
+    <string name="input_5">5</string>
+    <string name="input_6">6</string>
+    <string name="input_7">7</string>
+    <string name="input_8">8</string>
+    <string name="input_9">9</string>
+    <string name="input_0">0</string>
+    <string name="input_star">*</string>
+    <string name="input_hash">#</string>
+    <string name="input_phone_hint">Phone Number</string>
+    <string name="call_btn_text">Call</string>
+
+
+</resources>
