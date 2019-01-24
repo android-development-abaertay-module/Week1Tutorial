@@ -1,4 +1,4 @@
-package com.bodovix.tutorial_1;
+package com.bodovix.week1tutorial;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

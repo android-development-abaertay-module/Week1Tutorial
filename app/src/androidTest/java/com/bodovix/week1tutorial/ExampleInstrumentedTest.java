@@ -1,4 +1,4 @@
-package com.bodovix.tutorial_1;
+package com.bodovix.week1tutorial;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.bodovix.tutorial_1", appContext.getPackageName());
+        assertEquals("com.bodovix.week1tutorial", appContext.getPackageName());
     }
 }

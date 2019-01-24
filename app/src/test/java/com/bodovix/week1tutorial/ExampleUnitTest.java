@@ -1,4 +1,4 @@
-package com.bodovix.tutorial_1;
+package com.bodovix.week1tutorial;
 
 import org.junit.Test;
 
