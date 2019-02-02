@@ -14,6 +14,7 @@
     <string name="input_hash">#</string>
     <string name="input_phone_hint">Phone Number</string>
     <string name="call_btn_text">Call</string>
+    <string name="dialer_screen">Dialer Screen</string>
 
 
 </resources>

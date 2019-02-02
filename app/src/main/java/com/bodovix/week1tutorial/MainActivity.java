@@ -1,103 +1,91 @@
 package com.bodovix.week1tutorial;
 
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements View.OnTouchListener, GestureDetector.OnGestureListener {
+import java.util.Calendar;
+import java.util.Date;
 
-    TextView textInput;
-    String enteredNumber;
-    GestureDetector gestureScanner;
+public class MainActivity extends AppCompatActivity {
+
+    Handler handler;
+    Runnable runnable;
+
+    Button dialerScreenViewBtn;
+    TextView clockDisplayTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textInput = findViewById(R.id.textInput);
-        textInput.setOnTouchListener(this);
+        dialerScreenViewBtn = findViewById(R.id.dialerScreenBtn);
+        clockDisplayTxt = findViewById(R.id.clockTextView);
 
-        enteredNumber = "";
-        gestureScanner = new GestureDetector(getApplicationContext(),this);
+        handler = new Handler(){
+            public void handleMessage (Message msg){
+                String display = msg.getData().getString("display");
+                clockDisplayTxt.setText(display);
+            }
+        };
+
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                updateTime();
+            }
+        };
+
+        //start timer thread
+        handler.postDelayed(runnable,1000);
     }
 
-    public void callBtn_Clicked(View view){
-        if (enteredNumber.length() > 0) {
-            Toast.makeText(getApplicationContext(),"Calling: " + textInput.getText(),
-                    Toast.LENGTH_LONG).show();
+    private void updateTime() {
+        Calendar calendar = Calendar.getInstance();
+        Date date = new Date();
+        calendar.setTime(date);
+        String hours = calendar.get(Calendar.HOUR_OF_DAY) + "";
+        if (hours.length() == 1){
+            hours = "0" +hours;
+        }
+        String minutes = calendar.get(Calendar.MINUTE) + "";
+        if (minutes.length() == 1){
+            minutes = "0" + minutes;
+        }
+
+        int seconds = calendar.get(Calendar.SECOND);
+        boolean tick;
+        if (seconds % 2 == 0){
+            tick = true;
         }else{
-            Toast.makeText(getApplicationContext(), "Text Input Empty",
-                    Toast.LENGTH_LONG).show();
+            tick = false;
         }
-    }
 
-    public void btn_Clicked(View view){
-        Button btnClicked = (Button) view;
-        String tag = btnClicked.getTag().toString();
-
-        enteredNumber = enteredNumber + tag;
-        textInput.setText(enteredNumber);
-    }
-
-    @Override
-    public boolean onDown(MotionEvent e) {
-        return true;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-        Log.d("Touch", "onShowPress hit");
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        Log.d("Touch", "onSingleTapUp hit");
-        return false;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        Log.d("Touch", "onScroll hit");
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-        Log.d("Touch", "onPress hit");
-
-    }
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        Log.d("Touch", "onFling hit");
-
-        enteredNumber = "";
-        textInput.setText("");
-        return false;
-    }
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        Log.d("Touch", "onTouch hit");
-
-        switch (v.getId()){
-            case R.id.textInput:
-                Log.d("Touch", "textInput  hit");
-
-                gestureScanner.onTouchEvent(event);
-            break;
+        String display;
+        if (tick){
+            display = hours + ":" + minutes;
+        }else{
+            display = hours + " " + minutes;
         }
-        return true;
+
+        Message message = new Message();
+        Bundle bundle = new Bundle();
+        bundle.putString("display",display);
+
+        message.setData(bundle);
+        handler.sendMessage(message);
+        handler.postDelayed(runnable,1000);
+    }
+
+    public void dialerScreenBtn_Click(View view) {
+        Intent intent = new Intent(MainActivity.this,DialerActivity.class);
+        startActivity(intent);
+
     }
 }
-
-
