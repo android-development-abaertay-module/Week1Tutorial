@@ -20,8 +20,8 @@ import com.bodovix.week1tutorial.ViewModel.DialerViewModel;
 public class DialerActivity extends AppCompatActivity implements View.OnTouchListener, GestureDetector.OnGestureListener {
 
     TextView textInput;
-    String enteredNumber;
     DialerViewModel VM;
+    //live data used instead of normal string to communicate with VM
     LiveData<String> enteredNumberLD;
 
     GestureDetector gestureScanner;
@@ -35,7 +35,6 @@ public class DialerActivity extends AppCompatActivity implements View.OnTouchLis
         textInput.setOnTouchListener(this);
 
         VM = ViewModelProviders.of(this).get(DialerViewModel.class);
-        enteredNumber = "";
         enteredNumberLD = VM.getNumberEntered();
         enteredNumberLD.observe(this, new Observer<String>() {
             @Override
@@ -49,7 +48,7 @@ public class DialerActivity extends AppCompatActivity implements View.OnTouchLis
     }
 
     public void callBtn_Clicked(View view){
-        if (enteredNumber.length() > 0) {
+        if (enteredNumberLD.getValue().length() > 0) {
             Toast.makeText(getApplicationContext(),"Calling: " + textInput.getText(),
                     Toast.LENGTH_LONG).show();
         }else{
@@ -62,7 +61,7 @@ public class DialerActivity extends AppCompatActivity implements View.OnTouchLis
         Button btnClicked = (Button) view;
         String tag = btnClicked.getTag().toString();
 
-        enteredNumber = enteredNumber + tag;
+        String enteredNumber = enteredNumberLD.getValue() + tag;
         VM.setNumberEntered(enteredNumber);
         //View updated via Observer attached to VM Parameter
         //textInput.setText(enteredNumber);
@@ -102,8 +101,7 @@ public class DialerActivity extends AppCompatActivity implements View.OnTouchLis
         Log.d("Touch", "onFling hit");
 
         //clear entered Number
-        enteredNumber = "";
-        VM.setNumberEntered(enteredNumber);
+        VM.setNumberEntered("");
         //updated via vm
         //textInput.setText(enteredNumber);
         return false;
