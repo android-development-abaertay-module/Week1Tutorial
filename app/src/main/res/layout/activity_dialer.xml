@@ -148,6 +148,8 @@
         </GridLayout>
 
         <Button
+            android:id="@+id/callBtn"
+            android:onClick="callBtn_Clicked"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/call_btn_text" />

@@ -1,9 +1,12 @@
 package com.bodovix.week1tutorial;
 
 import android.accessibilityservice.AccessibilityService;
+import android.content.Intent;
 import android.inputmethodservice.Keyboard;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebView;
@@ -27,10 +30,15 @@ public class BrowserActivity extends AppCompatActivity implements View.OnKeyList
         webView = findViewById(R.id.webView);
         webView.setWebViewClient(new WebViewClient());
 
-        String inputURL = getIntent().getDataString().toString();
-        if(inputURL != null && !inputURL.isEmpty()){
-            webView.loadUrl(inputURL);
-            searchTxt.setText(inputURL);
+        try{
+            String inputURL = getIntent().getDataString().toString();
+            if (inputURL != null && !inputURL.isEmpty()) {
+                webView.loadUrl(inputURL);
+                searchTxt.setText(inputURL);
+            }
+        }catch (Exception ex){
+            //not loaded with uri (internal intent)
+            //do nothing
         }
     }
 
