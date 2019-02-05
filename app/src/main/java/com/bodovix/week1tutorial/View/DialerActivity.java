@@ -103,7 +103,9 @@ public class DialerActivity extends AppCompatActivity implements View.OnTouchLis
 
         //clear entered Number
         enteredNumber = "";
-        textInput.setText(enteredNumber);
+        VM.setNumberEntered(enteredNumber);
+        //updated via vm
+        //textInput.setText(enteredNumber);
         return false;
     }
 
