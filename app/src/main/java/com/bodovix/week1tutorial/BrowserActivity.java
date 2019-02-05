@@ -1,40 +1,35 @@
 package com.bodovix.week1tutorial;
 
-import android.accessibilityservice.AccessibilityService;
-import android.content.Intent;
-import android.inputmethodservice.Keyboard;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class BrowserActivity extends AppCompatActivity implements View.OnKeyListener {
 
-    EditText searchTxt;
+    EditText searchEditTxt;
     WebView webView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browser);
 
-        searchTxt = findViewById(R.id.browserSearchTxt);
-        searchTxt.setOnKeyListener(this);
+        searchEditTxt = findViewById(R.id.browserSearchTxt);
+        searchEditTxt.setOnKeyListener(this);
         webView = findViewById(R.id.webView);
         webView.setWebViewClient(new WebViewClient());
+
 
         try{
             String inputURL = getIntent().getDataString().toString();
             if (inputURL != null && !inputURL.isEmpty()) {
                 webView.loadUrl(inputURL);
-                searchTxt.setText(inputURL);
+                searchEditTxt.setText(inputURL);
             }
         }catch (Exception ex){
             //not loaded with uri (internal intent)
@@ -47,7 +42,7 @@ public class BrowserActivity extends AppCompatActivity implements View.OnKeyList
         int test = keyCode;
         //TODO: 67 = software enter key - need to figure out proper enum
         if (keyCode == KeyEvent.KEYCODE_ENTER ){
-            browseWeb(searchTxt.getText().toString());
+            browseWeb(searchEditTxt.getText().toString());
             return  true;
         }
         return false;
