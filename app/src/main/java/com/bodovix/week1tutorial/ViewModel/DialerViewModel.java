@@ -8,7 +8,7 @@ public class DialerViewModel extends ViewModel {
     private String numberEntered;
     private MutableLiveData<String> numberEnteredLiveData;
 
-    DialerViewModel (){
+    public DialerViewModel (){
         numberEntered = "";
         numberEnteredLiveData = new MutableLiveData<>();
     }
