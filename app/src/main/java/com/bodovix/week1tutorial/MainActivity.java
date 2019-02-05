@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.bodovix.week1tutorial.View.DialerActivity;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -84,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void dialerScreenBtn_Click(View view) {
-        Intent intent = new Intent(MainActivity.this,DialerActivity.class);
+        Intent intent = new Intent(MainActivity.this, DialerActivity.class);
         startActivity(intent);
 
     }
