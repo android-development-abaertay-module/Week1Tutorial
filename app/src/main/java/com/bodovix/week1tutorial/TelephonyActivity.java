@@ -9,15 +9,18 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class TelephonyActivity extends AppCompatActivity {
 
     private static final int READ_PHONE_STATE_REQUEST = 0;
     TelephonyManager telephonyManager;
+    PhoneStateListener phoneStateListener;
     TextView countryCodeTV;
     TextView operatorTV;
     TextView networkNameTV;
@@ -33,7 +36,28 @@ public class TelephonyActivity extends AppCompatActivity {
 
         checkPermissions();
 
+        phoneStateListener = new PhoneStateListener(){
+            @Override
+            public void onCallStateChanged(int state, String phoneNumber) {
+                super.onCallStateChanged(state, phoneNumber);
+                switch (state){
+                    case TelephonyManager.CALL_STATE_IDLE:
+                        Log.d("gwydion","Idle");
+                        break;
+                    case TelephonyManager.CALL_STATE_RINGING:
+                        Log.d("gwydion","RINGING");
+
+                        break;
+                    case TelephonyManager.CALL_STATE_OFFHOOK:
+                        Log.d("gwydion","OFF Hook");
+
+                        break;
+                }
+            }
+        };
         telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        telephonyManager.listen(phoneStateListener,PhoneStateListener.LISTEN_CALL_STATE);
+
         countryCodeTV = findViewById(R.id.countryCodeTV);
         operatorTV = findViewById(R.id.operatorTV);
         networkNameTV = findViewById(R.id.networkNameTV);
@@ -46,6 +70,20 @@ public class TelephonyActivity extends AppCompatActivity {
 
         showNetworkDetails();
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("gwydion","pause");
+        telephonyManager.listen(phoneStateListener,PhoneStateListener.LISTEN_NONE);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("gwydion","resume");
+        telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
     }
 
     private void checkPermissions() {
@@ -82,6 +120,9 @@ public class TelephonyActivity extends AppCompatActivity {
         try {
             deviceIdTV.setText(telephonyManager.getImei());
         } catch (SecurityException e) {
+            deviceIdTV.setText("Permission Required");
+        }
+        catch (Exception e) {
             deviceIdTV.setText("Permission Required");
         }
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
