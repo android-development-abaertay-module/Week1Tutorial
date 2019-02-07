@@ -3,6 +3,7 @@ package com.bodovix.week1tutorial;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -14,13 +15,21 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.bodovix.week1tutorial.BroadcastReceivers.CallInterceptor;
 
 public class TelephonyActivity extends AppCompatActivity {
 
     private static final int READ_PHONE_STATE_REQUEST = 0;
+    private static final int PROCESS_OUTGOING_CALLS = 1;
+
     TelephonyManager telephonyManager;
     PhoneStateListener phoneStateListener;
+    CallInterceptor callInterceptor;
+    IntentFilter phoneStateChangeFilter;
+    IntentFilter callFilter;
+
+
     TextView countryCodeTV;
     TextView operatorTV;
     TextView networkNameTV;
@@ -70,6 +79,12 @@ public class TelephonyActivity extends AppCompatActivity {
 
         showNetworkDetails();
 
+        callInterceptor = new CallInterceptor();
+        phoneStateChangeFilter = new IntentFilter("android.intent.action.PHONE_STATE");
+        callFilter = new IntentFilter("android.intent.action.NEW_OUTGOING_CALL");
+
+        registerReceiver(callInterceptor,phoneStateChangeFilter);
+        registerReceiver(callInterceptor,callFilter);
     }
 
     @Override
@@ -77,6 +92,9 @@ public class TelephonyActivity extends AppCompatActivity {
         super.onPause();
         Log.d("gwydion","pause");
         telephonyManager.listen(phoneStateListener,PhoneStateListener.LISTEN_NONE);
+
+        unregisterReceiver(callInterceptor);
+        unregisterReceiver(callInterceptor);
     }
 
     @Override
@@ -84,6 +102,10 @@ public class TelephonyActivity extends AppCompatActivity {
         super.onResume();
         Log.d("gwydion","resume");
         telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+
+        registerReceiver(callInterceptor, phoneStateChangeFilter);
+        registerReceiver(callInterceptor,callFilter);
+
     }
 
     private void checkPermissions() {
@@ -97,19 +119,44 @@ public class TelephonyActivity extends AppCompatActivity {
         } else {
             //permissions already granted
         }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.PROCESS_OUTGOING_CALLS)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.PROCESS_OUTGOING_CALLS},
+                    PROCESS_OUTGOING_CALLS);
+
+        } else {
+            //permissions already granted
+        }
+
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == READ_PHONE_STATE_REQUEST) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.d("gs", "granted");
-                //permissions granted
-            } else {
-                Intent intent = new Intent(TelephonyActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
+
+        switch (requestCode){
+            case READ_PHONE_STATE_REQUEST:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("gs", "granted");
+                    //permissions granted
+                    showNetworkDetails();
+                } else {
+                    Intent intent = new Intent(TelephonyActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case PROCESS_OUTGOING_CALLS:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("gs", "granted");
+                    //permissions granted
+
+                } else {
+                    Intent intent = new Intent(TelephonyActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+                break;
         }
     }
 
