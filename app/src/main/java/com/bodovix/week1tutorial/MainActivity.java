@@ -95,4 +95,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this,BrowserActivity.class);
         startActivity(intent);
     }
+
+    public void telephonyBtn_Click(View view) {
+        Intent intent = new Intent(MainActivity.this, TelephonyActivity.class);
+        startActivity(intent);
+    }
 }

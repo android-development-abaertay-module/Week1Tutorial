@@ -17,6 +17,7 @@
     <string name="dialer_screen">Dialer Screen</string>
     <string name="browser_screen">Browser Screen</string>
     <string name="activity_browser">Browser Activity GS</string>
+    <string name="telephony">Telephony</string>
 
 
 </resources>
