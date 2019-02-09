@@ -50,5 +50,4 @@ public class CallInterceptor extends BroadcastReceiver {
             this.setResultData("0123456789");
         }
     }
-
 }
