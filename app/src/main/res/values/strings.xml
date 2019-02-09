@@ -18,6 +18,8 @@
     <string name="browser_screen">Browser Screen</string>
     <string name="activity_browser">Browser Activity GS</string>
     <string name="telephony">Telephony</string>
+    <string name="send">SEND</string>
+    <string name="sms">SMS</string>
 
 
 </resources>

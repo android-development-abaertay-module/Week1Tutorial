@@ -28,6 +28,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/telephony"/>
+    <Button
+        android:id="@+id/smsScreenBtn"
+        android:onClick="smsBtn_Click"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sms"
+        />
     <TextView
         android:id="@+id/clockTextView"
         android:layout_width="match_parent"
