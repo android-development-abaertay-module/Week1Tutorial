@@ -19,11 +19,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.bodovix.week1tutorial.BroadcastReceivers.DeliveredSMSReceiver;
+import com.bodovix.week1tutorial.BroadcastReceivers.SentSMSReceiver;
+
 public class SMSActivity extends AppCompatActivity {
 
     private static final int SEND_SMS_REQUEST = 0;
 
     EditText smsText;
+    SentSMSReceiver smsReceiver;
+    DeliveredSMSReceiver deliveredSMSReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,34 +38,17 @@ public class SMSActivity extends AppCompatActivity {
         checkPermissions();
 
         //Dynamically registered Receiver on create
-        registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Log.d("gwyd","on Receive method hit");
-                switch(getResultCode()){
-                    case Activity.RESULT_OK:
-                        //display SENT message
-                        Toast.makeText(context,"SMS SENT: receiver hit",Toast.LENGTH_SHORT).show();
-                        Log.d("gwyd","SMS SENT");
-                        break;
-                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                        // display ERROR message
-                        Toast.makeText(context,"SMS ERROR: receiver hit",Toast.LENGTH_SHORT).show();
-                        Log.d("gwyd","SMS ERROR");
+        smsReceiver = new SentSMSReceiver();
+        registerReceiver(smsReceiver, new IntentFilter("SENT_SMS_ACTION") );
+        deliveredSMSReceiver = new DeliveredSMSReceiver();
+        registerReceiver(deliveredSMSReceiver, new IntentFilter("DELIVERED_SMS_ACTION"));
+    }
 
-                        break;
-                }
-            }
-        }, new IntentFilter("SENT_SMS_ACTION") );
-        registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-            // show delivery confirmation message
-                Toast.makeText(context,"SMS Delivered: receiver hit",Toast.LENGTH_SHORT).show();
-                Log.d("gwyd","SMS DELIVERED");
-            }
-        }, new IntentFilter("DELIVERED_SMS_ACTION"));
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(smsReceiver);
+        unregisterReceiver(deliveredSMSReceiver);
     }
 
     private void checkPermissions() {
